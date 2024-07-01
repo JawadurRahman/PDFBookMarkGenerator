@@ -1,5 +1,3 @@
-<!-- index.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,14 +14,26 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden; /* Prevent body from scrolling */
+
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 90%;
+            max-width: 1200px;
+            height: 100vh;
+            overflow-y: auto; /* Make the container scrollable */
+
         }
         #bookmarkForm {
             background: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            width: 100%;
+            width: 45%;
+            text-align: center;
         }
         input[type="file"],
         input[type="text"],
@@ -59,21 +69,40 @@
         .add-button:hover {
             background: #0056b3;
         }
+        #pdfViewerContainer {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
-    <form id="bookmarkForm" enctype="multipart/form-data" action="/generate-pdf" method="POST">
-        <h1>Free PDF BookMark/Outline Generator</h1>
-        <input type="file" name="pdfFile" accept=".pdf" required>
-        <div id="bookmarkEntries">
-            <div>
-                <input type="text" name="bookmarkName1" placeholder="Bookmark Name">
-                <input type="number" name="pageNumber1" placeholder="Page Number">
+    <div class="container">
+        <form id="bookmarkForm" enctype="multipart/form-data" action="/generate-pdf" method="POST">
+            <h1>Free PDF BookMark Generator</h1>
+            <input type="file" id="pdfFile" name="pdfFile" accept=".pdf" required onchange="displayPDF(this)">
+            <div id="bookmarkEntries">
+                <div>
+                    <input type="text" name="bookmarkName1" placeholder="Bookmark Name">
+                    <input type="number" name="pageNumber1" placeholder="Page Number">
+                </div>
             </div>
+            <button type="button" class="add-button" onclick="addBookmarkEntry()">Add Bookmark</button>
+            <button type="submit">Generate PDF</button>
+        </form>
+        <div id="pdfViewerContainer">
+            <iframe id="pdfViewer" src=""></iframe>
         </div>
-        <button type="button" class="add-button" onclick="addBookmarkEntry()">Add Bookmark</button>
-        <button type="submit">Generate PDF</button>
-    </form>
+    </div>
 
     <script>
         var index = 2;
@@ -86,6 +115,16 @@
             `;
             index++;
             bookmarkEntries.appendChild(newEntry);
+        }
+
+        function displayPDF(input) {
+            const file = input.files[0];
+            if (file.type === "application/pdf") {
+                const fileURL = URL.createObjectURL(file);
+                document.getElementById('pdfViewer').src = fileURL;
+            } else {
+                alert("Please upload a valid PDF file.");
+            }
         }
     </script>
 </body>
