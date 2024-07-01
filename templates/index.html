@@ -1,0 +1,27 @@
+<!-- index.html -->
+
+<form id="bookmarkForm" enctype="multipart/form-data" action="/generate-pdf" method="POST">
+    <input type="file" name="pdfFile" accept=".pdf" required>
+    <div id="bookmarkEntries">
+        <div>
+            <input type="text" name="bookmarkName1" placeholder="Bookmark Name">
+            <input type="number" name="pageNumber1" placeholder="Page Number">
+        </div>
+    </div>
+    <button type="button" onclick="addBookmarkEntry()">Add Bookmark</button>
+    <button type="submit">Generate PDF</button>
+</form>
+
+<script>
+    var index = 2
+    function addBookmarkEntry() {
+        const bookmarkEntries = document.getElementById("bookmarkEntries");
+        const newEntry = document.createElement("div");
+        newEntry.innerHTML = `
+            <input type="text" name="bookmarkName${index}" placeholder="Bookmark Name">
+            <input type="number" name="pageNumber${index}" placeholder="Page Number">
+        `;
+        index = index + 1
+        bookmarkEntries.appendChild(newEntry);
+    }
+</script>
