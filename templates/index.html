@@ -65,16 +65,21 @@
         }
         .add-button {
             background: #007bff;
-        }
+        } 
         .add-button:hover {
             background: #0056b3;
+        }
+        .remove-button {
+            background: #dc3545;
+        }
+        .remove-button:hover {
+            background: #c82333;
         }
         #pdfViewerContainer {
             width: 50%;
             height: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
         }
         iframe {
             width: 100%;
@@ -82,6 +87,15 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            width: 100%;
+            padding: 5px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            position: absolute;
+            bottom: 0;
         }
     </style>
 </head>
@@ -92,10 +106,12 @@
             <input type="file" id="pdfFile" name="pdfFile" accept=".pdf" required onchange="displayPDF(this)">
             <div id="bookmarkEntries">
                 <div>
-                    <input type="text" name="bookmarkName1" placeholder="Bookmark Name">
-                    <input type="number" name="pageNumber1" placeholder="Page Number">
+                    <input type="text" name="bookmarkName1" placeholder="Bookmark Name" required>
+                    <input type="number" min="1" name="pageNumber1" placeholder="Page Number" required>
                 </div>
             </div>
+            <button type="button" class="remove-button" onclick="removeLatestBookmarkEntry()">Remove Latest Bookmark</button>
+
             <button type="button" class="add-button" onclick="addBookmarkEntry()">Add Bookmark</button>
             <button type="submit">Generate PDF</button>
         </form>
@@ -104,17 +120,29 @@
         </div>
     </div>
 
+    <footer>
+        &copy; 2024 PDF Bookmark Generator. <a href="https://jawadurrahman.github.io/">Made by Jawadur</a>
+</footer>
+
     <script>
         var index = 2;
         function addBookmarkEntry() {
             const bookmarkEntries = document.getElementById("bookmarkEntries");
             const newEntry = document.createElement("div");
             newEntry.innerHTML = `
-                <input type="text" name="bookmarkName${index}" placeholder="Bookmark Name">
-                <input type="number" name="pageNumber${index}" placeholder="Page Number">
+                <input type="text" name="bookmarkName${index}" placeholder="Bookmark Name" required>
+                <input type="number" min="1" name="pageNumber${index}" placeholder="Page Number" required>
             `;
             index++;
             bookmarkEntries.appendChild(newEntry);
+        }
+
+        function removeLatestBookmarkEntry() {
+            const bookmarkEntries = document.getElementById("bookmarkEntries");
+            if (bookmarkEntries.children.length > 0) {
+                bookmarkEntries.removeChild(bookmarkEntries.lastChild);
+                index - 1 > 0 ? index-- : index;                
+            }
         }
 
         function displayPDF(input) {
