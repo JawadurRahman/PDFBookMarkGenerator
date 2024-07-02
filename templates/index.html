@@ -24,15 +24,22 @@
             width: 90%;
             max-width: 1200px;
             height: 100vh;
-            overflow-y: auto; /* Make the container scrollable */
+            /*overflow-y: auto; /* Make the container scrollable */
 
         }
-        #bookmarkForm {
+        .container2 {
+            width: 45%;
+            height: 80vh; /* Adjust height as needed */
+            overflow-y: auto; /* Make the container scrollable */
             background: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 45%;
+        }
+        #bookmarkForm {
+            background: #fff;
+            border-radius: 8px;
+            width: 100%;
             text-align: center;
         }
         input[type="file"],
@@ -101,6 +108,7 @@
 </head>
 <body>
     <div class="container">
+        <div class="container2">
         <form id="bookmarkForm" enctype="multipart/form-data" action="/generate-pdf" method="POST">
             <h1>Free PDF BookMark Generator</h1>
             <input type="file" id="pdfFile" name="pdfFile" accept=".pdf" required onchange="displayPDF(this)">
@@ -115,6 +123,7 @@
             <button type="button" class="add-button" onclick="addBookmarkEntry()">Add Bookmark</button>
             <button type="submit">Generate PDF</button>
         </form>
+        </div>
         <div id="pdfViewerContainer">
             <iframe id="pdfViewer" src=""></iframe>
         </div>
