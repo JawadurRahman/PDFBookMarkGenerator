@@ -14,49 +14,6 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB limit
 def index():
     return render_template('index.html')
 
-"""
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-"""
-"""
-
-@app.route('/generate-pdf', methods=['POST'])
-def generate_pdf():
-    # Handle file upload
-    pdfFile = request.files['pdfFile']
-    if pdfFile and pdfFile.filename.endswith('.pdf'):
-        pdfFilePath = os.path.join(app.config['UPLOAD_FOLDER'], pdfFile.filename)
-        pdfFile.save(pdfFilePath)
-    else:
-        return 'Error: Please upload a valid PDF file.'
-
-    # Process bookmark data
-    outlines = []
-    index = 1  # Start with 1 for naming consistency with HTML field names
-    while f'bookmarkName{index}' in request.form:
-        bookmarkName = request.form[f'bookmarkName{index}']
-        pageNumber = int(request.form[f'pageNumber{index}']) - 1
-        outlines.append((bookmarkName, pageNumber))
-        index += 1
-
-    # Generate new PDF with outlines
-    pdf = PdfReader(open(pdfFilePath, 'rb'))
-    pdf_writer = PdfWriter()
-
-    for page in range(len(pdf.pages)):
-        pdf_writer.add_page(pdf.pages[page])
-
-    for bookmarkName, pageNumber in outlines:
-        pdf_writer.add_outline_item(bookmarkName, pageNumber)
-
-    newPdfFilePath = os.path.join(app.config['UPLOAD_FOLDER'], 'new_pdf.pdf')
-    with open(newPdfFilePath, 'wb') as f:
-        pdf_writer.write(f)
-
-    return f'PDF generated successfully! <a href="/{newPdfFilePath}">Download</a>'
-"""
-
 @app.route('/generate-pdf', methods=['POST'])
 def generate_pdf():
     # Handle file upload
@@ -94,6 +51,9 @@ def generate_pdf():
         return 'Error: Please upload a valid PDF file.'
 
 
-
 if __name__ == '__main__':
-    app.run(debug=True)
+  app.run(host='0.0.0.0', port=5000)
+
+#if __name__ == '__main__':
+    #app.run(host='0.0.0.0', port=80)
+#https://ask.replit.com/t/flask-app-not-loading-except-when-deployed/58186/13
